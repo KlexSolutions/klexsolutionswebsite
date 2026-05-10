@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Klex Solutions | Home</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        /* --- GLOBAL VARIABLES & RESETS --- */
+        :root {
+            --graphite: #1A1A1A;
+            --white: #FFFFFF;
+            --coral: #FF6B6B;
+            --light-gray: #F4F4F5;
+            --slate: #6B7280;
+            --pale-coral: #FFE4E4;
+            --font-head: 'Plus Jakarta Sans', sans-serif;
+            --font-body: 'Inter', sans-serif;
+            --radius: 8px;
+            --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body { font-family: var(--font-body); color: var(--graphite); background-color: var(--white); line-height: 1.6; -webkit-font-smoothing: antialiased; }
+        h1, h2, h3, h4 { font-family: var(--font-head); font-weight: 700; line-height: 1.2; color: var(--graphite); }
+        a { text-decoration: none; color: inherit; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 5%; }
+
+        /* --- ANIMATIONS --- */
+        .reveal { opacity: 0; transform: translateY(30px); transition: all 0.7s var(--ease-out); }
+        .reveal.visible { opacity: 1; transform: translateY(0); }
+        .reveal-left { opacity: 0; transform: translateX(-40px); transition: all 0.7s var(--ease-out); }
+        .reveal-left.visible { opacity: 1; transform: translateX(0); }
+        .reveal-right { opacity: 0; transform: translateX(40px); transition: all 0.7s var(--ease-out); }
+        .reveal-right.visible { opacity: 1; transform: translateX(0); }
+        .stagger > * { transition-delay: calc(var(--i, 0) * 100ms); }
+
+        /* --- BUTTONS --- */
+        .btn-primary, .btn-secondary { display: inline-flex; align-items: center; justify-content: center; font-weight: 600; padding: 14px 28px; border-radius: 6px; transition: all 0.4s var(--ease-out); cursor: pointer; border: none; font-family: var(--font-body); font-size: 1rem; }
+        .btn-primary { background-color: var(--coral); color: var(--white); }
+        .btn-primary:hover { background-color: #E55A5A; transform: translateY(-3px); box-shadow: 0 10px 20px rgba(255, 107, 107, 0.25); }
+        .btn-secondary { background-color: transparent; color: var(--white); border: 2px solid var(--white); }
+        .btn-secondary:hover { background-color: var(--white); color: var(--graphite); transform: translateY(-3px); box-shadow: 0 10px 20px rgba(255, 255, 255, 0.15); }
+
+        /* --- HEADER & NAVIGATION --- */
+        header { background-color: var(--white); border-bottom: 1px solid #EAEAEA; position: sticky; top: 0; z-index: 100; transition: box-shadow 0.3s var(--ease-out); }
+        header.scrolled { box-shadow: 0 4px 16px rgba(0,0,0,0.06); }
+        .nav-container { display: flex; justify-content: space-between; align-items: center; height: 80px; }
+        
+        /* Logo Hover */
+        .logo { display: flex; align-items: center; cursor: pointer; transition: transform 0.3s var(--ease-out); }
+        .logo:hover { transform: scale(1.02); }
+        
+        .nav-links { display: flex; gap: 30px; align-items: center; }
+        .nav-links a { font-size: 0.95rem; font-weight: 500; transition: color 0.3s var(--ease-out); cursor: pointer; }
+        .nav-links a:hover:not(.btn-primary) { color: var(--coral); }
+
+        /* Mobile Menu */
+        .hamburger { display: none; background: none; border: none; cursor: pointer; width: 30px; height: 24px; position: relative; }
+        .hamburger span { display: block; position: absolute; height: 2px; width: 100%; background: var(--graphite); border-radius: 2px; opacity: 1; left: 0; transform: rotate(0deg); transition: .25s ease-in-out; }
+        .hamburger span:nth-child(1) { top: 0px; }
+        .hamburger span:nth-child(2) { top: 10px; }
+        .hamburger span:nth-child(3) { top: 20px; }
+        .hamburger.open span:nth-child(1) { top: 10px; transform: rotate(135deg); }
+        .hamburger.open span:nth-child(2) { opacity: 0; left: -60px; }
+        .hamburger.open span:nth-child(3) { top: 10px; transform: rotate(-135deg); }
+        .mobile-menu { display: none; position: fixed; top: 80px; left: 0; width: 100%; background: var(--white); padding: 20px 5%; box-shadow: 0 10px 15px rgba(0,0,0,0.05); z-index: 99; flex-direction: column; gap: 20px; }
+        .mobile-menu.active { display: flex; }
+
+        /* --- FOOTER --- */
+        footer { background-color: var(--graphite); color: var(--white); padding: 60px 0 30px 0; text-align: center; border-top: 1px solid rgba(255,255,255,0.1); }
+        footer p { color: var(--slate); font-size: 0.9rem; margin-top: 20px; }
+
+        /* =========================================================
+           HOME PAGE STYLES
+           ========================================================= */
+        .hero { background-color: var(--graphite); color: var(--white); padding: 120px 0; text-align: center; position: relative; overflow: hidden; }
+        .hero-bg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0.15; z-index: 0; }
+        .hero .container { position: relative; z-index: 1; }
+        .hero h1 { color: var(--white); font-size: clamp(2.5rem, 5vw, 4.5rem); max-width: 900px; margin: 0 auto 24px auto; letter-spacing: -1px; }
+        .hero p { color: #D1D5DB; font-size: 1.25rem; max-width: 760px; margin: 0 auto 40px auto; }
+        .hero-actions { display: flex; gap: 16px; justify-content: center; }
+
+        .social-proof { background-color: var(--light-gray); padding: 40px 0; text-align: center; }
+        .social-proof p { font-weight: 600; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px; color: var(--slate); }
+
+        .section-padding { padding: 100px 0; }
+        .section-header { max-width: 600px; margin-bottom: 60px; }
+        .section-header h4 { color: var(--coral); margin-bottom: 8px; text-transform: uppercase; font-size: 0.9rem; letter-spacing: 1px; }
+        .section-header h2 { font-size: 2.5rem; margin-bottom: 16px; }
+        .section-header p { color: var(--slate); font-size: 1.1rem; }
+
+        /* Cost of Growth Grid + Card Hover */
+        .grid-4 { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 40px; }
+        .grid-card { padding: 24px; border: 1px solid transparent; border-radius: var(--radius); transition: all 0.4s var(--ease-out); }
+        .grid-card:hover { border-color: #EAEAEA; transform: translateY(-5px); background-color: #FAFAFA; }
+        .grid-card h3 { font-size: 1.3rem; margin-bottom: 12px; }
+        .grid-card p { color: var(--slate); font-size: 0.95rem; }
+
+        .authority { background-color: var(--graphite); color: var(--white); }
+        .authority .section-header h2 { color: var(--white); }
+        .authority .section-header p { color: #D1D5DB; }
+
+        /* Solutions Grid + Floating Glow Card Hover */
+        .solutions { background-color: var(--light-gray); }
+        .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 40px; }
+        .solution-card { background: var(--white); border-radius: var(--radius); overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.03); transition: all 0.4s var(--ease-out); border: 1px solid transparent; }
+        .solution-card:hover { transform: translateY(-8px); box-shadow: 0 20px 40px rgba(255, 107, 107, 0.08); border-color: rgba(255, 107, 107, 0.2); }
+        .solution-img { width: 100%; height: 200px; object-fit: cover; border-bottom: 4px solid var(--coral); background-color: var(--slate); }
+        .solution-content { padding: 30px; }
+        .solution-content h3 { color: var(--coral); margin-bottom: 12px; font-size: 1.4rem; }
+
+        .contact { background-color: var(--white); }
+        .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; }
+        .contact-info p { color: var(--slate); margin-bottom: 30px; font-size: 1.1rem; }
+        .contact-label { font-weight: 700; color: var(--coral); font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px; display: block; }
+        
+        .contact-form { display: flex; flex-direction: column; gap: 20px; background: var(--light-gray); padding: 40px; border-radius: var(--radius); }
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        .contact-form input, .contact-form textarea { width: 100%; padding: 14px 16px; border: 1px solid #D1D5DB; border-radius: 6px; font-family: var(--font-body); font-size: 1rem; outline: none; transition: border-color 0.3s; }
+        .contact-form input:focus, .contact-form textarea:focus { border-color: var(--coral); }
+        .contact-form textarea { min-height: 120px; resize: vertical; }
+
+        /* RESPONSIVE STYLES */
+        @media (max-width: 768px) {
+            .nav-links { display: none; }
+            .hamburger { display: block; }
+            .hero { padding: 80px 0; }
+            .hero-actions { flex-direction: column; }
+            .section-header h2 { font-size: 2rem; }
+            .contact-grid { grid-template-columns: 1fr; }
+            .form-row { grid-template-columns: 1fr; }
+            .contact-form { padding: 30px 20px; }
+        }
+    </style>
+</head>
+<body>
+
+    <header id="main-header">
+        <div class="container nav-container">
+            <a href="index.html" class="logo">
+                <img src="KS Full Logo.svg?v=3" alt="Klex Solutions" style="height: 32px; width: auto;">
+            </a>
+            <nav class="nav-links">
+                <a href="#solutions">Solutions</a>
+                <a href="case-studies.html">Case Studies</a>
+                <a href="diagnostic.html">The AI Diagnostic</a>
+                <a href="#contact" class="btn-primary" style="padding: 10px 20px; color:white;">Book a Consultation</a>
+            </nav>
+            <button class="hamburger" id="hamburger" aria-label="Menu">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </header>
+
+    <div class="mobile-menu" id="mobileMenu">
+        <a href="#solutions">Solutions</a>
+        <a href="case-studies.html">Case Studies</a>
+        <a href="diagnostic.html">The AI Diagnostic</a>
+        <a href="#contact" class="btn-primary" style="color:white;">Book a Consultation</a>
+    </div>
+
+    <main>
+        <section class="hero">
+            <img src="home-hero.webp?v=3" alt="" class="hero-bg" onerror="this.style.display='none'">
+            <div class="container">
+                <div class="reveal">
+                    <h1>Scale your business. Kill the busywork.</h1>
+                    <p>Everyone tells SMBs they need to use AI to gain an edge, but nobody tells them where to start. We build custom AI and automation systems to handle the repetitive admin tasks bottlenecking your growth. Empower your team to achieve massive output without increasing headcount.</p>
+                    <div class="hero-actions">
+                        <a href="#contact" class="btn-primary" style="color:white;">Win Your Time Back</a>
+                        <a href="diagnostic.html" class="btn-secondary">Take Free Diagnostic</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div class="social-proof reveal">
+            <div class="container">
+                <p>★ 5.0 Rated • Trusted by expanding UK Businesses • End-to-End Automation</p>
+            </div>
+        </div>
+
+        <section class="section-padding">
+            <div class="container">
+                <div class="section-header reveal">
+                    <h4>The Real Cost of Growth</h4>
+                    <h2>Growth should move you forward. Not bury you in admin.</h2>
+                    <p>As your business grows, complexity grows faster. Your best people spend their days on tasks that don't move the needle. Here is where the money actually goes:</p>
+                </div>
+                <div class="grid-4 stagger">
+                    <div class="grid-card reveal" style="--i:0">
+                        <img src="layers.svg?v=3" alt="Bloated tech stack" style="width: 36px; margin-bottom: 16px;">
+                        <h3>A bloated tech stack</h3>
+                        <p>You're paying for tools your team barely uses, and the ones they do use don't talk to each other. Every disconnected system costs you time and money.</p>
+                    </div>
+                    <div class="grid-card reveal" style="--i:1">
+                        <img src="trending_up.svg?v=3" alt="Growing costs" style="width: 36px; margin-bottom: 16px;">
+                        <h3>Growing pains & costs</h3>
+                        <p>When demand increases, the natural response is to hire. But often the work overwhelming your team is repetitive admin that a well-built system can handle.</p>
+                    </div>
+                    <div class="grid-card reveal" style="--i:2">
+                        <img src="hourglass.svg?v=3" alt="Lost revenue" style="width: 36px; margin-bottom: 16px;">
+                        <h3>Lost revenue</h3>
+                        <p>A lead comes in. It sits in a shared inbox. By the time someone responds, the opportunity is cold. Speed to lead is revenue on the table.</p>
+                    </div>
+                    <div class="grid-card reveal" style="--i:3">
+                        <img src="autorenew.svg?v=3" alt="Team on autopilot" style="width: 36px; margin-bottom: 16px;">
+                        <h3>Team on autopilot</h3>
+                        <p>Good people, buried in data entry, chasing invoices, and copying information. They could be doing work that actually grows the business.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section-padding authority">
+            <div class="container reveal-left">
+                <div class="section-header">
+                    <h4>Why You Need An Expert</h4>
+                    <h2>95% of internal AI projects fail. Here's why.</h2>
+                    <p>Generative AI pilots rarely make it past the trial phase. Not because the technology doesn't work, but because the strategy is wrong. Decision-makers rush to implement without a clear architecture, ending up with broken tools their team refuses to use. We start with strategy, build with precision, and make sure your team actually knows how to use what we build.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="solutions" class="section-padding solutions">
+            <div class="container">
+                <div class="section-header reveal">
+                    <h4>What We Build</h4>
+                    <h2>Stop thinking in roles. Start thinking in workflows.</h2>
+                    <p>Every business has different bottlenecks. Here are the core outcomes we engineer for our clients using invisible infrastructure.</p>
+                </div>
+
+                <div class="grid-3 stagger">
+                    <div class="solution-card reveal" style="--i:0">
+                        <img src="solution-speed.webp?v=3" alt="Speed to Lead" class="solution-img" onerror="this.style.display='none'">
+                        <div class="solution-content">
+                            <h3 style="display: flex; align-items: center; gap: 8px;">
+                                <img src="bolt.svg?v=3" alt="Speed" style="width: 24px;"> Speed to Lead
+                            </h3>
+                            <p>A new enquiry comes in. Within seconds, it's acknowledged, qualified, and routed. Automated triage ensures your team only touches what needs a human.</p>
+                        </div>
+                    </div>
+                    <div class="solution-card reveal" style="--i:1">
+                        <img src="solution-onboard.webp?v=3" alt="Client Onboarding" class="solution-img" onerror="this.style.display='none'">
+                        <div class="solution-content">
+                            <h3 style="display: flex; align-items: center; gap: 8px;">
+                                <img src="check_circle.svg?v=3" alt="Onboarding" style="width: 24px;"> Client Onboarding
+                            </h3>
+                            <p>Contracts, follow-ups, and internal tasks—all triggered automatically. What used to take days of back-and-forth now runs itself seamlessly.</p>
+                        </div>
+                    </div>
+                    <div class="solution-card reveal" style="--i:2">
+                        <img src="solution-ops.webp?v=3" alt="Operational Efficiency" class="solution-img" onerror="this.style.display='none'">
+                        <div class="solution-content">
+                            <h3 style="display: flex; align-items: center; gap: 8px;">
+                                <img src="settings.svg?v=3" alt="Efficiency" style="width: 24px;"> Operational Efficiency
+                            </h3>
+                            <p>Reporting, data entry, and cross-platform syncing handled invisibly. Your tools talk to each other so your team can do meaningful work.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="reveal" style="margin-top: 60px; text-align: center;">
+                    <a href="case-studies.html" class="btn-primary" style="color:white;">See the proof (Case Studies) &rarr;</a>
+                </div>
+            </div>
+        </section>
+
+        <section id="contact" class="section-padding contact">
+            <div class="container">
+                <div class="contact-grid">
+                    <div class="contact-info reveal-left">
+                        <div class="section-header" style="margin-bottom: 20px;">
+                            <h4>Get In Touch</h4>
+                            <h2>Start a conversation.</h2>
+                        </div>
+                        <p>Whether you've got a specific project in mind or just want to explore what's possible, we're happy to talk. No pressure, no commitment.</p>
+                        
+                        <div class="contact-detail-item" style="display: flex; align-items: center; gap: 12px; margin-bottom: 20px;">
+                            <img src="mail.svg?v=3" alt="Email" style="width: 24px;">
+                            <div>
+                                <span class="contact-label" style="margin-bottom: 2px;">Email</span>
+                                <a href="mailto:hello@klexsolutions.com" style="color: var(--graphite); font-weight: 500;">hello@klexsolutions.com</a>
+                            </div>
+                        </div>
+                        <div class="contact-detail-item" style="display: flex; align-items: center; gap: 12px;">
+                            <img src="location.svg?v=3" alt="Location" style="width: 24px;">
+                            <div>
+                                <span class="contact-label" style="margin-bottom: 2px;">Based</span>
+                                <span style="color: var(--graphite); font-weight: 500;">Hertfordshire & Bedfordshire, UK</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <form class="contact-form reveal-right" id="contact-form">
+                        <div class="form-row">
+                            <input type="text" name="firstName" placeholder="First name" required>
+                            <input type="text" name="lastName" placeholder="Last name" required>
+                        </div>
+                        <input type="email" name="email" placeholder="Email Address" required>
+                        <input type="text" name="company" placeholder="Company Name">
+                        <textarea name="message" placeholder="Tell us a bit about what you're looking for..." required></textarea>
+                        <button type="submit" class="btn-primary" id="submit-btn">Send Message &rarr;</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer id="main-footer">
+        <div class="container">
+            <div class="logo" style="justify-content: center; margin-bottom: 20px; display: flex;">
+                <img src="KS Full Logo White.svg?v=3" alt="Klex Solutions" style="height: 32px; width: auto;">
+            </div>
+            <p>&copy; 2026 Klex Solutions — Your AI Partner</p>
+        </div>
+    </footer>
+
+    <script>
+        // --- Animation Observer ---
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    revealObserver.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.08, rootMargin: '0px 0px -60px 0px' });
+
+        document.querySelectorAll('.reveal, .reveal-left, .reveal-right').forEach(el => {
+            revealObserver.observe(el); 
+        });
+
+        // --- Sticky Header Shadow ---
+        const header = document.getElementById('main-header');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 10) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+
+        // --- Mobile Menu Toggle ---
+        const hamburger = document.getElementById('hamburger');
+        const mobileMenu = document.getElementById('mobileMenu');
+        
+        // Toggle menu when clicking hamburger
+        hamburger.addEventListener('click', () => {
+            hamburger.classList.toggle('open');
+            mobileMenu.classList.toggle('active');
+        });
+
+        // Close mobile menu when a link is clicked
+        const mobileLinks = mobileMenu.querySelectorAll('a');
+        mobileLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                hamburger.classList.remove('open');
+                mobileMenu.classList.remove('active');
+            });
+        });
+
+        // --- Make.com Connected Form Logic ---
+        document.getElementById('contact-form').addEventListener('submit', function(e) {
+            e.preventDefault(); 
+            const form = e.target;
+            const btn = document.getElementById('submit-btn');
+            const originalBtnText = btn.innerHTML;
+
+            btn.innerHTML = 'Sending...';
+            btn.style.pointerEvents = 'none';
+
+            const formData = new FormData(form);
+            const data = Object.fromEntries(formData.entries());
+
+            fetch('https://hook.eu2.make.com/cniignjk3juw10m8m88hjwp5yox35o99', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            })
+            .then(response => {
+                btn.innerHTML = 'Message Sent ✓';
+                btn.style.backgroundColor = '#10B981'; // Green success
+                form.reset(); 
+                setTimeout(() => {
+                    btn.innerHTML = originalBtnText;
+                    btn.style.backgroundColor = '';
+                    btn.style.pointerEvents = 'auto';
+                }, 3000);
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                btn.innerHTML = 'Error. Please try again.';
+                btn.style.backgroundColor = 'red';
+                setTimeout(() => {
+                    btn.innerHTML = originalBtnText;
+                    btn.style.backgroundColor = '';
+                    btn.style.pointerEvents = 'auto';
+                }, 3000);
+            });
+        });
+    </script>
+</body>
+</html>

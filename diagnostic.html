@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Klex Solutions | AI Diagnostic</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        /* --- GLOBAL VARIABLES & RESETS --- */
+        :root {
+            --graphite: #1A1A1A;
+            --white: #FFFFFF;
+            --coral: #FF6B6B;
+            --light-gray: #F4F4F5;
+            --slate: #6B7280;
+            --pale-coral: #FFE4E4;
+            --font-head: 'Plus Jakarta Sans', sans-serif;
+            --font-body: 'Inter', sans-serif;
+            --radius: 8px;
+            --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        /* Notice the background color is explicitly set to --light-gray for this specific page */
+        body { font-family: var(--font-body); color: var(--graphite); background-color: var(--light-gray); line-height: 1.6; -webkit-font-smoothing: antialiased; }
+        h1, h2, h3, h4 { font-family: var(--font-head); font-weight: 700; line-height: 1.2; color: var(--graphite); }
+        a { text-decoration: none; color: inherit; }
+
+        /* --- ANIMATIONS --- */
+        .reveal-left { opacity: 0; transform: translateX(-40px); transition: all 0.7s var(--ease-out); }
+        .reveal-left.visible { opacity: 1; transform: translateX(0); }
+        .reveal-right { opacity: 0; transform: translateX(40px); transition: all 0.7s var(--ease-out); }
+        .reveal-right.visible { opacity: 1; transform: translateX(0); }
+
+        /* =========================================================
+           DIAGNOSTIC PAGE STYLES (Split Screen)
+           ========================================================= */
+        .diagnostic-wrapper { display: flex; flex-wrap: wrap; min-height: 100vh; }
+        
+        .left-panel { flex: 1 1 45%; background-color: var(--graphite); color: var(--white); padding: 60px 8%; display: flex; flex-direction: column; }
+        .logo { display: inline-block; transition: transform 0.3s var(--ease-out); }
+        .logo:hover { transform: scale(1.02); }
+        .back-link { font-size: 0.9rem; color: var(--slate); transition: color 0.3s; margin-bottom: 40px; display: inline-block; cursor: pointer; }
+        .back-link:hover { color: var(--white); }
+        .left-panel-content { margin-top: 60px; margin-bottom: auto; }
+        .tagline-eyebrow { color: var(--coral); font-weight: 600; text-transform: uppercase; letter-spacing: 1px; font-size: 0.85rem; margin-bottom: 16px; display: block; }
+        .left-panel h1 { color: var(--white); font-size: clamp(2rem, 4vw, 3rem); margin-bottom: 24px; }
+        .left-panel p { color: #D1D5DB; font-size: 1.1rem; margin-bottom: 40px; max-width: 480px; }
+        .benefits-list { list-style: none; }
+        .benefits-list li { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 20px; color: var(--white); font-size: 0.95rem; }
+
+        .right-panel { flex: 1 1 55%; background-color: var(--light-gray); padding: 60px 8%; display: flex; align-items: center; justify-content: center; }
+        .interface-card { background: var(--white); width: 100%; max-width: 600px; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); overflow: hidden; border: 1px solid #EAEAEA; }
+        .interface-header { background-color: var(--white); padding: 20px 24px; border-bottom: 1px solid #EAEAEA; display: flex; justify-content: space-between; align-items: center; }
+        .interface-status { display: flex; align-items: center; gap: 8px; font-size: 0.85rem; font-weight: 600; color: var(--slate); }
+        .status-dot { width: 8px; height: 8px; background-color: var(--coral); border-radius: 50%; display: inline-block; }
+        .interface-body { padding: 0; min-height: 600px; background-color: #FAFAFA; display: flex; flex-direction: column; position: relative; }
+
+        /* RESPONSIVE STYLES */
+        @media (max-width: 900px) {
+            .left-panel, .right-panel { flex: 1 1 100%; }
+            .left-panel { padding: 40px 5%; min-height: 50vh; }
+            .right-panel { padding: 40px 5%; }
+        }
+    </style>
+</head>
+<body>
+
+    <main style="animation: fadeIn 0.4s ease-in-out;">
+        <div class="diagnostic-wrapper">
+            <div class="left-panel reveal-left">
+                <a href="index.html" class="logo">
+                    <img src="KS Full Logo White.svg?v=3" alt="Klex Solutions" style="height: 32px; width: auto;">
+                </a>
+                <div class="left-panel-content">
+                    <a href="index.html" class="back-link">← Back to website</a>
+                    <span class="tagline-eyebrow">Free AI Workflow Diagnostic</span>
+                    <h1>Find your operational bottleneck in 3 minutes.</h1>
+                    <p>In a short conversation, our diagnostic tool will map your operations, identify your biggest workflow friction point, and deliver a personalised report to your inbox.</p>
+                    <ul class="benefits-list">
+                        <li><img src="check_circle.svg?v=3" alt="Check" style="width: 20px; flex-shrink: 0; margin-top: 2px;"> A clear picture of where operations are losing time.</li>
+                        <li><img src="check_circle.svg?v=3" alt="Check" style="width: 20px; flex-shrink: 0; margin-top: 2px;"> The real cost of leaving that bottleneck unresolved.</li>
+                        <li><img src="check_circle.svg?v=3" alt="Check" style="width: 20px; flex-shrink: 0; margin-top: 2px;"> A personalised report with practical next steps.</li>
+                    </ul>
+                </div>
+                <div style="font-size: 0.85rem; color: var(--slate); margin-top: 40px;">
+                    &copy; 2026 Klex Solutions. Completely free. No obligation.
+                </div>
+            </div>
+
+            <div class="right-panel reveal-right">
+                <div class="interface-card">
+                    <div class="interface-header">
+                        <div class="interface-status"><span class="status-dot"></span> Diagnostic Active</div>
+                    </div>
+                    
+                    <div class="interface-body" id="work-fred-container">
+                        <div style="padding: 40px; text-align: center; color: var(--slate); margin-top: auto; margin-bottom: auto; border: 2px dashed #EAEAEA; border-radius: 8px; margin: 20px;">
+                            <strong>Paste your AI Embed Code here.</strong><br><br>
+                            <span style="font-size: 0.9rem;">(e.g., your Voiceflow or Chatbase iframe snippet)</span>
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // --- Animation Observer ---
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    revealObserver.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.08, rootMargin: '0px 0px -60px 0px' });
+
+        document.querySelectorAll('.reveal-left, .reveal-right').forEach(el => {
+            revealObserver.observe(el); 
+        });
+    </script>
+</body>
+</html>
