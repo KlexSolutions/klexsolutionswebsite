@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Klex Solutions | AI Diagnostic</title>
+    <title>Klex Solutions | Free AI Workflow Diagnostic</title>
+    <meta name="description" content="Find the bottleneck costing your business the most. Free AI diagnostic tool by Klex Solutions.">
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -12,9 +13,11 @@
     <style>
         /* --- GLOBAL VARIABLES & RESETS --- */
         :root {
+            /* New Brand Palette */
             --graphite: #1A1A1A;
             --white: #FFFFFF;
             --coral: #FF6B6B;
+            --coral-light: #FF8F8F;
             --light-gray: #F4F4F5;
             --slate: #6B7280;
             --pale-coral: #FFE4E4;
@@ -22,14 +25,29 @@
             --font-body: 'Inter', sans-serif;
             --radius: 8px;
             --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+
+            /* Interface Mapped Variables */
+            --ink-primary: var(--graphite);
+            --ink-secondary: var(--slate);
+            --ink-tertiary: #9CA3AF;
+            --surface: var(--light-gray);
+            --surface-elevated: var(--white);
+            --border: #EAEAEA;
+            --border-light: #F3F4F6;
+            --msg-user-bg: var(--graphite);
+            --msg-user-text: var(--white);
+            --msg-ai-bg: #F9FAFB;
+            --msg-ai-text: var(--graphite);
+            --error: #ef4444;
+            --success: #10b981;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
         html { scroll-behavior: smooth; }
-        /* Notice the background color is explicitly set to --light-gray for this specific page */
         body { font-family: var(--font-body); color: var(--graphite); background-color: var(--light-gray); line-height: 1.6; -webkit-font-smoothing: antialiased; }
         h1, h2, h3, h4 { font-family: var(--font-head); font-weight: 700; line-height: 1.2; color: var(--graphite); }
         a { text-decoration: none; color: inherit; }
+        *:focus-visible { outline: 2px solid var(--coral); outline-offset: 2px; }
 
         /* --- ANIMATIONS --- */
         .reveal-left { opacity: 0; transform: translateX(-40px); transition: all 0.7s var(--ease-out); }
@@ -37,8 +55,12 @@
         .reveal-right { opacity: 0; transform: translateX(40px); transition: all 0.7s var(--ease-out); }
         .reveal-right.visible { opacity: 1; transform: translateX(0); }
 
+        @keyframes slide-up { to { opacity: 1; transform: translateY(0); } }
+        @keyframes bounce { 0%, 80%, 100% { transform: scale(0); opacity: 0.4; } 40% { transform: scale(1); opacity: 1; } }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
         /* =========================================================
-           DIAGNOSTIC PAGE STYLES (Split Screen)
+           PAGE LAYOUT (Split Screen)
            ========================================================= */
         .diagnostic-wrapper { display: flex; flex-wrap: wrap; min-height: 100vh; }
         
@@ -54,18 +76,138 @@
         .benefits-list { list-style: none; }
         .benefits-list li { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 20px; color: var(--white); font-size: 0.95rem; }
 
-        .right-panel { flex: 1 1 55%; background-color: var(--light-gray); padding: 60px 8%; display: flex; align-items: center; justify-content: center; }
-        .interface-card { background: var(--white); width: 100%; max-width: 600px; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); overflow: hidden; border: 1px solid #EAEAEA; }
-        .interface-header { background-color: var(--white); padding: 20px 24px; border-bottom: 1px solid #EAEAEA; display: flex; justify-content: space-between; align-items: center; }
+        .right-panel { flex: 1 1 55%; background-color: var(--light-gray); padding: 40px 8%; display: flex; align-items: center; justify-content: center; }
+
+        /* =========================================================
+           INTERFACE CHAT CARD
+           ========================================================= */
+        .interface-card { 
+            background: var(--white); 
+            width: 100%; 
+            max-width: 600px; 
+            height: 85vh; 
+            max-height: 850px;
+            min-height: 550px;
+            border-radius: 12px; 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05); 
+            border: 1px solid var(--border); 
+            display: flex; 
+            flex-direction: column; 
+            position: relative;
+            overflow: hidden;
+        }
+
+        .interface-header { 
+            background-color: var(--white); 
+            padding: 16px 24px; 
+            border-bottom: 1px solid var(--border); 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            z-index: 10;
+        }
+
         .interface-status { display: flex; align-items: center; gap: 8px; font-size: 0.85rem; font-weight: 600; color: var(--slate); }
         .status-dot { width: 8px; height: 8px; background-color: var(--coral); border-radius: 50%; display: inline-block; }
-        .interface-body { padding: 0; min-height: 600px; background-color: #FAFAFA; display: flex; flex-direction: column; position: relative; }
+        .session-id-display { font-family: monospace; font-size: 0.7rem; color: var(--ink-tertiary); background: var(--surface); padding: 2px 6px; border-radius: 4px; border: 1px solid var(--border-light); }
 
-        /* RESPONSIVE STYLES */
+        .reset-btn {
+            background: none; border: 1px solid var(--border); color: var(--slate); cursor: pointer;
+            padding: 6px 12px; border-radius: 6px; display: flex; align-items: center; gap: 6px;
+            font-family: var(--font-body); font-size: 0.8rem; font-weight: 600; transition: all 0.2s;
+        }
+        .reset-btn:hover { background: var(--surface); color: var(--graphite); border-color: var(--slate); }
+        .reset-icon { width: 14px; height: 14px; }
+        .reset-btn.spinning .reset-icon { animation: spin 0.8s linear infinite; }
+
+        .interface-body { 
+            flex: 1; 
+            display: flex; 
+            flex-direction: column; 
+            background-color: var(--white); 
+            overflow: hidden;
+        }
+
+        /* --- PROGRESS SHELL --- */
+        .progress-shell {
+            padding: 16px 24px;
+            border-bottom: 1px solid var(--border-light);
+            display: grid;
+            grid-template-columns: 44px 1fr;
+            gap: 16px;
+            align-items: center;
+            background: var(--surface-elevated);
+        }
+        .micro-visual-wrap {
+            width: 44px; height: 44px; background: var(--graphite);
+            border: 1px solid var(--border); border-radius: 10px;
+            display: flex; align-items: center; justify-content: center;
+        }
+        .micro-visual { width: 24px; height: 24px; transition: all 0.3s var(--ease-out); }
+        .micro-visual path { fill: none; stroke: var(--coral); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; transition: d 0.3s var(--ease-out); }
+        .progress-meta { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; gap: 16px; }
+        .stage-label { font-size: 0.75rem; font-weight: 600; color: var(--slate); text-transform: capitalize; }
+        .progress-label { font-size: 0.75rem; font-weight: 700; color: var(--coral); }
+        .progress-track { width: 100%; height: 6px; background: var(--surface); border-radius: 99px; overflow: hidden; border: 1px solid var(--border-light); }
+        .progress-bar { width: 0%; height: 100%; background: var(--coral); border-radius: 99px; transition: width 0.3s var(--ease-out); }
+
+        /* --- CHAT FEED --- */
+        .chat-feed {
+            flex: 1; padding: 24px; overflow-y: auto; display: flex; flex-direction: column; gap: 16px; scroll-behavior: smooth;
+        }
+        .chat-feed::-webkit-scrollbar { width: 5px; }
+        .chat-feed::-webkit-scrollbar-track { background: transparent; }
+        .chat-feed::-webkit-scrollbar-thumb { background: var(--border); border-radius: 10px; }
+
+        .message-wrapper { display: flex; flex-direction: column; max-width: 85%; animation: slide-up 0.2s var(--ease-out) forwards; opacity: 0; transform: translateY(8px); }
+        .message-wrapper.user { align-self: flex-end; }
+        .message-wrapper.ai, .message-wrapper.error { align-self: flex-start; }
+        .message-bubble { padding: 14px 18px; font-size: 0.95rem; line-height: 1.6; word-wrap: break-word; white-space: pre-wrap; }
+        
+        .message-wrapper.user .message-bubble { background: var(--msg-user-bg); color: var(--msg-user-text); border-radius: 16px 16px 4px 16px; }
+        .message-wrapper.ai .message-bubble { background: var(--msg-ai-bg); color: var(--msg-ai-text); border-radius: 16px 16px 16px 4px; border: 1px solid var(--border); }
+        .message-wrapper.error .message-bubble { background: #fef2f2; color: var(--error); border: 1px solid #fecaca; border-radius: 16px 16px 16px 4px; }
+
+        .system-message { align-self: center; font-size: 0.7rem; color: var(--slate); text-transform: uppercase; letter-spacing: 0.05em; font-weight: 700; margin: 8px 0; background: var(--surface); padding: 4px 12px; border-radius: 99px; border: 1px solid var(--border-light); }
+        
+        .typing-indicator { display: flex; align-items: center; gap: 5px; padding: 16px 20px !important; }
+        .typing-dot { width: 5px; height: 5px; background: var(--slate); border-radius: 50%; animation: bounce 1.4s infinite ease-in-out both; }
+        .typing-dot:nth-child(1) { animation-delay: -0.32s; }
+        .typing-dot:nth-child(2) { animation-delay: -0.16s; }
+
+        /* --- INPUT AREA --- */
+        .input-area { padding: 16px 24px 24px; background: var(--white); border-top: 1px solid var(--border); }
+        .input-form { display: flex; align-items: flex-end; gap: 10px; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 6px 8px 6px 16px; transition: border-color 0.2s, box-shadow 0.2s; }
+        .input-form:focus-within { border-color: var(--coral); background: var(--white); box-shadow: 0 0 0 3px var(--pale-coral); }
+        .chat-input { flex: 1; border: none; background: transparent; padding: 10px 0; font-family: var(--font-body); font-size: 0.95rem; color: var(--graphite); resize: none; max-height: 120px; min-height: 24px; line-height: 1.5; }
+        .chat-input:focus { outline: none; }
+        .chat-input::placeholder { color: var(--ink-tertiary); }
+        
+        .send-btn { background: var(--graphite); color: var(--white); border: none; width: 40px; height: 40px; border-radius: 6px; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.2s; flex-shrink: 0; }
+        .send-btn:hover:not(:disabled) { background: var(--coral); transform: translateY(-1px); box-shadow: 0 4px 12px rgba(255, 107, 107, 0.3); }
+        .send-btn:disabled { background: var(--border); color: var(--white); cursor: not-allowed; }
+
+        /* --- PANELS --- */
+        .completion-panel, .loading-panel { display: none; margin-top: 12px; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px 20px; }
+        .completion-panel.visible, .loading-panel.visible { display: block; animation: slide-up 0.2s var(--ease-out) forwards; }
+        .panel-title { font-size: 0.95rem; font-weight: 700; margin-bottom: 4px; color: var(--graphite); }
+        .panel-copy { font-size: 0.85rem; color: var(--slate); margin-bottom: 12px; line-height: 1.5; }
+        
+        .booking-btn { display: inline-flex; align-items: center; gap: 6px; background: var(--coral); color: var(--white); padding: 10px 20px; border-radius: 6px; font-size: 0.9rem; font-weight: 600; transition: all 0.2s; }
+        .booking-btn:hover { background: var(--coral-light); transform: translateY(-1px); box-shadow: 0 4px 12px rgba(255, 107, 107, 0.3); }
+        .loading-panel-row { display: flex; align-items: center; gap: 12px; }
+        .spinner { width: 20px; height: 20px; border: 2px solid var(--border); border-top-color: var(--coral); border-radius: 50%; animation: spin 0.8s linear infinite; flex-shrink: 0; }
+
+        /* --- TOAST --- */
+        .toast { position: absolute; top: 70px; left: 50%; transform: translateX(-50%) translateY(-20px); background: var(--graphite); color: var(--white); padding: 8px 16px; border-radius: 99px; font-size: 0.85rem; font-weight: 600; opacity: 0; pointer-events: none; transition: all 0.3s; z-index: 20; display: flex; align-items: center; gap: 8px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); border: 1px solid #333; }
+        .toast.visible { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+        /* --- RESPONSIVE --- */
         @media (max-width: 900px) {
             .left-panel, .right-panel { flex: 1 1 100%; }
-            .left-panel { padding: 40px 5%; min-height: 50vh; }
+            .left-panel { padding: 40px 5%; min-height: 40vh; }
             .right-panel { padding: 40px 5%; }
+            .interface-card { height: 75vh; }
         }
     </style>
 </head>
@@ -73,6 +215,7 @@
 
     <main style="animation: fadeIn 0.4s ease-in-out;">
         <div class="diagnostic-wrapper">
+            
             <div class="left-panel reveal-left">
                 <a href="index.html" class="logo">
                     <img src="KS Full Logo White.svg?v=3" alt="Klex Solutions" style="height: 32px; width: auto;">
@@ -83,9 +226,9 @@
                     <h1>Find your operational bottleneck in 3 minutes.</h1>
                     <p>In a short conversation, our diagnostic tool will map your operations, identify your biggest workflow friction point, and deliver a personalised report to your inbox.</p>
                     <ul class="benefits-list">
-                        <li><img src="check_circle.svg?v=3" alt="Check" style="width: 20px; flex-shrink: 0; margin-top: 2px;"> A clear picture of where operations are losing time.</li>
-                        <li><img src="check_circle.svg?v=3" alt="Check" style="width: 20px; flex-shrink: 0; margin-top: 2px;"> The real cost of leaving that bottleneck unresolved.</li>
-                        <li><img src="check_circle.svg?v=3" alt="Check" style="width: 20px; flex-shrink: 0; margin-top: 2px;"> A personalised report with practical next steps.</li>
+                        <li><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--coral); flex-shrink: 0;"><polyline points="20 6 9 17 4 12"></polyline></svg> A clear picture of where operations are losing time.</li>
+                        <li><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--coral); flex-shrink: 0;"><polyline points="20 6 9 17 4 12"></polyline></svg> The real cost of leaving that bottleneck unresolved.</li>
+                        <li><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--coral); flex-shrink: 0;"><polyline points="20 6 9 17 4 12"></polyline></svg> A personalised report with practical next steps.</li>
                     </ul>
                 </div>
                 <div style="font-size: 0.85rem; color: var(--slate); margin-top: 40px;">
@@ -95,16 +238,82 @@
 
             <div class="right-panel reveal-right">
                 <div class="interface-card">
+                    
+                    <div id="toast" class="toast" aria-hidden="true">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                        <span>Session reset</span>
+                    </div>
+
                     <div class="interface-header">
-                        <div class="interface-status"><span class="status-dot"></span> Diagnostic Active</div>
+                        <div class="interface-status">
+                            <span class="status-dot"></span> Diagnostic Active
+                            <span id="session-display" class="session-id-display">ID: ...</span>
+                        </div>
+                        <button id="reset-btn" class="reset-btn" aria-label="Reset conversation">
+                            <svg class="reset-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path>
+                                <polyline points="3 3 3 8 8 8"></polyline>
+                            </svg>
+                            Reset
+                        </button>
                     </div>
                     
-                    <div class="interface-body" id="work-fred-container">
-                        <div style="padding: 40px; text-align: center; color: var(--slate); margin-top: auto; margin-bottom: auto; border: 2px dashed #EAEAEA; border-radius: 8px; margin: 20px;">
-                            <strong>Paste your AI Embed Code here.</strong><br><br>
-                            <span style="font-size: 0.9rem;">(e.g., your Voiceflow or Chatbase iframe snippet)</span>
-                        </div>
+                    <div class="interface-body">
                         
+                        <div class="progress-shell">
+                            <div class="micro-visual-wrap" aria-hidden="true">
+                                <svg id="micro-visual" class="micro-visual" viewBox="0 0 40 40">
+                                    <path id="micro-visual-path" d="M6 30 C11 10, 15 33, 20 19 S29 10, 34 28"></path>
+                                </svg>
+                            </div>
+                            <div>
+                                <div class="progress-meta">
+                                    <span id="stage-label" class="stage-label">Getting started</span>
+                                    <span id="progress-label" class="progress-label">0%</span>
+                                </div>
+                                <div class="progress-track">
+                                    <div id="progress-bar" class="progress-bar"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <section id="chat-feed" class="chat-feed" role="log" aria-live="polite">
+                            <div class="message-wrapper ai">
+                                <div class="message-bubble">Right, let's get started. First things first — what's your name?</div>
+                            </div>
+                        </section>
+
+                        <footer class="input-area">
+                            <form id="chat-form" class="input-form">
+                                <textarea id="chat-input" class="chat-input" placeholder="Type your answer..." rows="1" required aria-label="Message input"></textarea>
+                                <button type="submit" id="send-btn" class="send-btn" aria-label="Send message" disabled>
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                        <line x1="22" y1="2" x2="11" y2="13"></line>
+                                        <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+                                    </svg>
+                                </button>
+                            </form>
+
+                            <div id="loading-panel" class="loading-panel" aria-live="polite">
+                                <div class="loading-panel-row">
+                                    <div class="spinner"></div>
+                                    <div>
+                                        <div class="panel-title">Generating your report</div>
+                                        <div class="panel-copy">Analysing your responses and building your personalised diagnostic. This should only take a moment.</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div id="completion-panel" class="completion-panel" aria-live="polite">
+                                <div class="panel-title">Your report is on its way</div>
+                                <div class="panel-copy">If you'd like help turning this diagnostic into a real solution, book a free consultation.</div>
+                                <a id="booking-btn" class="booking-btn" href="https://calendar.app.google/B1QwiwG4WNKaD3xf7" target="_blank" rel="noopener noreferrer">
+                                    Book a consultation
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                                </a>
+                            </div>
+                        </footer>
+
                     </div>
                 </div>
             </div>
@@ -112,7 +321,7 @@
     </main>
 
     <script>
-        // --- Animation Observer ---
+        // Reveal Animations
         const revealObserver = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
@@ -121,9 +330,240 @@
                 }
             });
         }, { threshold: 0.08, rootMargin: '0px 0px -60px 0px' });
+        document.querySelectorAll('.reveal-left, .reveal-right').forEach(el => revealObserver.observe(el));
 
-        document.querySelectorAll('.reveal-left, .reveal-right').forEach(el => {
-            revealObserver.observe(el); 
+        // Work-Fred Logic
+        document.addEventListener('DOMContentLoaded', () => {
+            const WEBHOOK_URL = 'https://hook.eu2.make.com/xjqsa3gnpitp7sirwyc9p2m9k6nijk06';
+            const BOOKING_LINK = 'https://calendar.app.google/B1QwiwG4WNKaD3xf7';
+
+            const chatFeed = document.getElementById('chat-feed');
+            const chatForm = document.getElementById('chat-form');
+            const chatInput = document.getElementById('chat-input');
+            const sendBtn = document.getElementById('send-btn');
+            const resetBtn = document.getElementById('reset-btn');
+            const toast = document.getElementById('toast');
+            const sessionDisplay = document.getElementById('session-display');
+
+            const progressBar = document.getElementById('progress-bar');
+            const progressLabel = document.getElementById('progress-label');
+            const stageLabel = document.getElementById('stage-label');
+            const microVisualPath = document.getElementById('micro-visual-path');
+
+            const loadingPanel = document.getElementById('loading-panel');
+            const completionPanel = document.getElementById('completion-panel');
+            const bookingBtn = document.getElementById('booking-btn');
+
+            let currentSessionId = '';
+            let conversationComplete = false;
+
+            bookingBtn.href = BOOKING_LINK;
+
+            const STAGE_LABELS = {
+                identity_capture: 'Getting context',
+                pipeline_discovery: 'Mapping your pipeline',
+                bottleneck_probe: 'Finding the bottleneck',
+                deep_dive_offer: 'Optional deep dive',
+                deep_dive_questions: 'Gathering more detail',
+                email_capture: 'Final details',
+                analysis: 'Analysing',
+                completed: 'Complete'
+            };
+
+            const VISUAL_STATES = [
+                { max: 20, path: 'M6 30 C11 10, 15 33, 20 19 S29 10, 34 28' },
+                { max: 40, path: 'M6 28 C10 14, 15 30, 20 20 S28 13, 34 26' },
+                { max: 60, path: 'M6 27 C10 18, 15 24, 20 20 S28 16, 34 24' },
+                { max: 80, path: 'M6 24 C12 20, 16 22, 20 20 S28 19, 34 22' },
+                { max: 100, path: 'M6 20 C14 20, 18 20, 20 20 S28 20, 34 20' }
+            ];
+
+            function generateSessionId() {
+                if (typeof crypto !== 'undefined' && crypto.randomUUID) return crypto.randomUUID();
+                return Math.random().toString(36).slice(2) + Math.random().toString(36).slice(2);
+            }
+
+            function refreshSession() {
+                currentSessionId = generateSessionId();
+                sessionDisplay.textContent = `ID: ${currentSessionId.substring(0, 8)}`;
+                conversationComplete = false;
+                setProgress(0, 'Getting started');
+                hideLoadingPanel();
+                hideCompletionPanel();
+                unlockChat();
+            }
+
+            function setProgress(percent = 0, stage = 'Getting started') {
+                const clamped = Math.max(0, Math.min(100, Number(percent) || 0));
+                progressBar.style.width = `${clamped}%`;
+                progressLabel.textContent = `${clamped}%`;
+                stageLabel.textContent = STAGE_LABELS[stage] || stage || 'In progress';
+
+                const visual = VISUAL_STATES.find(v => clamped <= v.max) || VISUAL_STATES[VISUAL_STATES.length - 1];
+                microVisualPath.setAttribute('d', visual.path);
+            }
+
+            function lockChat(message = 'Session complete. Reset to start again.') {
+                conversationComplete = true;
+                chatInput.disabled = true;
+                sendBtn.disabled = true;
+                chatInput.placeholder = message;
+            }
+
+            function unlockChat() {
+                chatInput.disabled = false;
+                chatInput.placeholder = 'Type your answer...';
+                sendBtn.disabled = chatInput.value.trim() === '';
+            }
+
+            function showLoadingPanel() { loadingPanel.classList.add('visible'); completionPanel.classList.remove('visible'); }
+            function hideLoadingPanel() { loadingPanel.classList.remove('visible'); }
+            function showCompletionPanel() { completionPanel.classList.add('visible'); }
+            function hideCompletionPanel() { completionPanel.classList.remove('visible'); }
+            function scrollToBottom() { chatFeed.scrollTop = chatFeed.scrollHeight; }
+
+            function appendMessage(role, text) {
+                const wrapper = document.createElement('div');
+                wrapper.className = `message-wrapper ${role}`;
+                const bubble = document.createElement('div');
+                bubble.className = 'message-bubble';
+                bubble.textContent = text;
+                wrapper.appendChild(bubble);
+                chatFeed.appendChild(wrapper);
+                scrollToBottom();
+                return wrapper;
+            }
+
+            function appendSystemMessage(text) {
+                const el = document.createElement('div');
+                el.className = 'system-message';
+                el.textContent = text;
+                chatFeed.appendChild(el);
+                scrollToBottom();
+            }
+
+            let typingIndicatorEl = null;
+
+            function showTypingIndicator() {
+                typingIndicatorEl = document.createElement('div');
+                typingIndicatorEl.className = 'message-wrapper ai';
+                const bubble = document.createElement('div');
+                bubble.className = 'message-bubble typing-indicator';
+                for (let i = 0; i < 3; i++) {
+                    const dot = document.createElement('div');
+                    dot.className = 'typing-dot';
+                    bubble.appendChild(dot);
+                }
+                typingIndicatorEl.appendChild(bubble);
+                chatFeed.appendChild(typingIndicatorEl);
+                scrollToBottom();
+            }
+
+            function removeTypingIndicator() {
+                if (typingIndicatorEl && typingIndicatorEl.parentNode) {
+                    typingIndicatorEl.parentNode.removeChild(typingIndicatorEl);
+                    typingIndicatorEl = null;
+                }
+            }
+
+            function showToast() {
+                toast.classList.add('visible');
+                setTimeout(() => toast.classList.remove('visible'), 2500);
+            }
+
+            function normalizeResponsePayload(rawText) {
+                try {
+                    const parsed = JSON.parse(rawText);
+                    if (typeof parsed === 'string') return { response: parsed, stage: 'pipeline_discovery', progress_percent: 0, conversation_complete: false, ui_action: 'continue' };
+                    return {
+                        response: parsed.response || parsed.reply || parsed.message || parsed.text || 'No response received.',
+                        stage: parsed.stage || 'pipeline_discovery',
+                        progress_percent: parsed.progress_percent ?? 0,
+                        conversation_complete: !!parsed.conversation_complete,
+                        ui_action: parsed.ui_action || 'continue'
+                    };
+                } catch (e) {
+                    return { response: rawText || 'No response received.', stage: 'pipeline_discovery', progress_percent: 0, conversation_complete: false, ui_action: 'continue' };
+                }
+            }
+
+            function applyUIAction(payload) {
+                setProgress(payload.progress_percent, payload.stage);
+                if (payload.ui_action === 'show_loading_screen') { lockChat('Generating your report...'); showLoadingPanel(); return; }
+                if (payload.conversation_complete || payload.ui_action === 'show_booking_panel' || payload.ui_action === 'close_chat') {
+                    hideLoadingPanel(); lockChat(); showCompletionPanel(); return;
+                }
+                hideLoadingPanel();
+            }
+
+            refreshSession();
+
+            chatInput.addEventListener('input', function () {
+                this.style.height = 'auto';
+                this.style.height = `${this.scrollHeight}px`;
+                sendBtn.disabled = this.value.trim() === '' || conversationComplete;
+            });
+
+            chatInput.addEventListener('keydown', function (e) {
+                if (e.key === 'Enter' && !e.shiftKey) {
+                    e.preventDefault();
+                    if (this.value.trim() !== '' && !conversationComplete) sendBtn.click();
+                }
+            });
+
+            chatForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                if (conversationComplete) return;
+
+                const messageText = chatInput.value.trim();
+                if (!messageText) return;
+
+                appendMessage('user', messageText);
+                chatInput.value = '';
+                chatInput.style.height = 'auto';
+                sendBtn.disabled = true;
+                showTypingIndicator();
+
+                try {
+                    const response = await fetch(`${WEBHOOK_URL}?action=chat`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ action: 'chat', message: messageText, sessionId: currentSessionId })
+                    });
+
+                    if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+                    const rawData = await response.text();
+                    const payload = normalizeResponsePayload(rawData);
+
+                    removeTypingIndicator();
+                    appendMessage('ai', payload.response);
+                    applyUIAction(payload);
+                } catch (error) {
+                    console.error('Error sending message:', error);
+                    removeTypingIndicator();
+                    appendMessage('error', 'Network error: unable to reach the diagnostic tool right now. Please try again.');
+                }
+            });
+
+            resetBtn.addEventListener('click', async () => {
+                resetBtn.classList.add('spinning');
+                try {
+                    await fetch(`${WEBHOOK_URL}?action=reset`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ action: 'reset', sessionId: currentSessionId })
+                    });
+                } catch (error) { console.error('Error resetting session:', error); }
+
+                setTimeout(() => {
+                    refreshSession();
+                    chatFeed.innerHTML = '';
+                    appendSystemMessage('New session');
+                    appendMessage('ai', 'Right, let\'s get started. First things first — what\'s your name?');
+                    resetBtn.classList.remove('spinning');
+                    showToast();
+                }, 450);
+            });
         });
     </script>
 </body>
