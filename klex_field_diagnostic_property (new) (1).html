@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="UTF-8">
+<title>Klex Solutions Field Diagnostic: UK Letting Agent Gas Safety Workflow</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap');
+
+  @page {
+    size: A4;
+    margin: 20mm 18mm;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body {
+    background: #FFFFFF;
+    color: #1A1A1A;
+  }
+
+  body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 11pt;
+    line-height: 1.6;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .page { max-width: 174mm; margin: 0 auto; }
+
+  /* Header */
+  .doc-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-bottom: 14pt;
+    border-bottom: 1.5pt solid #1A1A1A;
+    margin-bottom: 26pt;
+  }
+  .logo { height: 28pt; width: auto; }
+  .doc-label {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-weight: 700;
+    font-size: 9.5pt;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: #1A1A1A;
+  }
+
+  /* Title block */
+  .title-block {
+    margin-bottom: 22pt;
+    padding: 16pt 0 16pt 18pt;
+    border-left: 3pt solid #FF6B6B;
+  }
+  h1 {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-weight: 700;
+    font-size: 22pt;
+    line-height: 1.22;
+    color: #1A1A1A;
+    margin-bottom: 8pt;
+    letter-spacing: -0.01em;
+  }
+  .subtitle {
+    font-family: 'Inter', sans-serif;
+    font-weight: 400;
+    font-size: 12pt;
+    color: #6B7280;
+    line-height: 1.5;
+  }
+
+  /* About callout */
+  .about-block {
+    background: #FFE4E4;
+    border-left: 3pt solid #FF6B6B;
+    padding: 14pt 18pt;
+    margin-bottom: 28pt;
+    font-size: 10.5pt;
+    page-break-inside: avoid;
+  }
+  .about-block .label {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-weight: 700;
+    font-size: 8.5pt;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: #1A1A1A;
+    margin-bottom: 6pt;
+  }
+  .about-block p { margin-bottom: 0; line-height: 1.55; }
+
+  /* Sections */
+  h2 {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-weight: 700;
+    font-size: 14pt;
+    color: #1A1A1A;
+    margin-top: 22pt;
+    margin-bottom: 10pt;
+    page-break-after: avoid;
+    letter-spacing: -0.005em;
+  }
+  h2:first-of-type { margin-top: 0; }
+
+  p { margin-bottom: 10pt; }
+  p:last-child { margin-bottom: 0; }
+
+  em.stage {
+    font-style: normal;
+    font-weight: 600;
+    color: #1A1A1A;
+  }
+
+  /* Table */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 14pt 0 4pt;
+    page-break-inside: avoid;
+    font-size: 10pt;
+  }
+  th {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-weight: 700;
+    font-size: 9pt;
+    text-align: left;
+    padding: 9pt 10pt;
+    background: #1A1A1A;
+    color: #FFFFFF;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  td {
+    padding: 8pt 10pt;
+    border-bottom: 0.5pt solid #F4F4F5;
+    color: #1A1A1A;
+    line-height: 1.45;
+  }
+  tr.total td {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-weight: 700;
+    background: #F4F4F5;
+    border-top: 1.5pt solid #1A1A1A;
+    border-bottom: none;
+    color: #1A1A1A;
+  }
+  th:first-child, td:first-child { width: 38%; }
+
+  /* Status callout */
+  .status-block {
+    margin: 24pt 0 4pt;
+    padding: 12pt 16pt;
+    background: #F4F4F5;
+    border-left: 3pt solid #6B7280;
+    font-size: 10.5pt;
+    page-break-inside: avoid;
+  }
+  .status-block .label {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-weight: 700;
+    font-size: 8.5pt;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: #6B7280;
+    margin-bottom: 4pt;
+  }
+  .status-block p { margin-bottom: 0; line-height: 1.5; }
+
+  /* CTA block */
+  .cta-block {
+    margin-top: 28pt;
+    padding: 22pt 24pt;
+    background: #1A1A1A;
+    color: #FFFFFF;
+    page-break-inside: avoid;
+  }
+  .cta-block h2 {
+    color: #FFFFFF;
+    margin-top: 0;
+    margin-bottom: 10pt;
+    font-size: 15pt;
+  }
+  .cta-block p {
+    color: #FFFFFF;
+    margin-bottom: 8pt;
+    line-height: 1.55;
+  }
+  .cta-block p:last-child { margin-bottom: 0; }
+  .cta-accent {
+    color: #FF6B6B;
+    font-weight: 600;
+  }
+
+  /* Footer brand mark */
+  .doc-footer {
+    margin-top: 22pt;
+    padding-top: 14pt;
+    border-top: 1pt solid #F4F4F5;
+    text-align: center;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-weight: 600;
+    font-size: 8.5pt;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: #6B7280;
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- Document header -->
+  <div class="doc-header">
+    <img class="logo" src="https://klexsolutions.com/KS%20Full%20Logo.svg?v=3" alt="Klex Solutions">
+    <div class="doc-label">Field Diagnostic</div>
+  </div>
+
+  <!-- Title block -->
+  <div class="title-block">
+    <h1>Inside a UK Letting Agent's Gas Safety Workflow: A Field Diagnostic</h1>
+    <div class="subtitle">How we mapped 12+ hours a month of admin out of one of the most paperwork-heavy compliance workflows in UK lettings.</div>
+  </div>
+
+  <!-- About this document -->
+  <div class="about-block">
+    <div class="label">About this document</div>
+    <p>This is a real client diagnostic Klex Solutions delivered to a UK letting agent. The agency is anonymised. The build described is currently in development at the time of writing. The savings figures below are based on the client's own volume data, conservatively modelled. We'll update this document with measured results once the system has been live for 60 days.</p>
+  </div>
+
+  <!-- Content -->
+  <h2>The Setup</h2>
+  <p>A UK letting agent, ~25 staff, around 600 units under management (a typical mid-sized SMB letting agency). The team operates on CFP (their property management software) plus Excel sheets for tracking, with two staff members (a Property Manager and the office administrator) handling what's effectively a manual bridge between the two systems.</p>
+  <p>We were brought in to look at one of the most admin-heavy workflows in their operation: Gas Safety Certificate management.</p>
+
+  <h2>The Workflow (Current State)</h2>
+  <p>50 Gas Safety renewals per month. Each renewal touches three distinct stages, each living in a different mix of systems.</p>
+  <p><em class="stage">Stage 1: Landlord instructions.</em> The Property Manager runs a report in CFP, exports to Excel, manually drafts personalised emails to landlords requesting authorisation, and tracks replies in another spreadsheet. Roughly 2 hours/month.</p>
+  <p><em class="stage">Stage 2: Contractor instruction.</em> Once landlords have approved (or the deadline has passed), the Property Manager checks who hasn't responded, updates the spreadsheet, and drafts emails to gas safety contractors with each tenant's details. About 3 hours/month, plus daily chase-checking which eats another 4 hours.</p>
+  <p><em class="stage">Stage 3: Completion and Friday Sheet.</em> Certificates arrive by email, the Property Manager uploads to CFP, manually updates the master tracking sheet, and refreshes the "Friday Sheet" used for the weekly compliance review. About 4 hours/month of Excel entry.</p>
+  <p>Total: roughly 13 hours/month going into a single compliance workflow, before the team has even touched the actual safety inspections.</p>
+
+  <h2>The Bottleneck Diagnosis</h2>
+  <p>The software (CFP) isn't the problem. The team works around it well. The problem is that CFP is locked down (we can't change how it operates), so the team has built a manual "human bridge" of data movement between CFP, Excel, and email.</p>
+  <p>That human bridge is where the team's days are getting absorbed.</p>
+
+  <h2>The Build Pattern (The Hybrid Model)</h2>
+  <p>We can't change CFP. We don't need to. We can build automation around it: folder-based workflows that handle the data movement without touching the underlying software.</p>
+  <p>The principle: the team continues to use CFP and Excel exactly as they do today. They just save files into specific folders, and the automation handles everything downstream.</p>
+  <p><em class="stage">Landlord instructions:</em> the Property Manager saves the CFP export into a folder called "New Instructions." The automation reads the file, sends personalised emails to landlords with one-click approval buttons, and tracks replies automatically. If a landlord doesn't reply by the deadline, the system auto-approves per the agency's existing rules.</p>
+  <p><em class="stage">Contractor dispatch:</em> as soon as a landlord approves (or the deadline passes), the automation emails the gas safety contractor with the tenant details. The Property Manager gets a daily summary of the few cases that need a phone call. No more hunting through spreadsheets.</p>
+  <p><em class="stage">Completion and Friday Sheet:</em> when a certificate arrives by email, the Property Manager saves the PDF into a "Completed" folder. The system emails the certificate to the landlord, updates the master tracking sheet to "Complete", and refreshes the Friday Sheet for the administrator. The Property Manager still uploads the PDF into CFP (that part stays manual because CFP is locked down), but saves 10-12 minutes of admin per property.</p>
+
+  <h2>Projected Impact</h2>
+  <p>Based on the client's own volume data (50 renewals/month), conservatively modelled:</p>
+  <table>
+    <thead>
+      <tr>
+        <th>Task</th>
+        <th>Current Manual Time</th>
+        <th>With Automation</th>
+        <th>Monthly Time Saved</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Initial landlord emails</td>
+        <td>2 hrs (drafting/merging)</td>
+        <td>5 mins (file saving)</td>
+        <td>~2 hrs</td>
+      </tr>
+      <tr>
+        <td>Chasing and tracking</td>
+        <td>4 hrs (daily checking)</td>
+        <td>0 mins (automated)</td>
+        <td>~4 hrs</td>
+      </tr>
+      <tr>
+        <td>Contractor instructions</td>
+        <td>3 hrs (drafting emails)</td>
+        <td>0 mins (automated)</td>
+        <td>~3 hrs</td>
+      </tr>
+      <tr>
+        <td>Certificate filing &amp; updates</td>
+        <td>4 hrs (Excel entry)</td>
+        <td>30 mins (upload only)</td>
+        <td>~3.5 hrs</td>
+      </tr>
+      <tr class="total">
+        <td>Total</td>
+        <td>~13 hrs/month</td>
+        <td>~35 mins/month</td>
+        <td>~12+ hrs saved</td>
+      </tr>
+    </tbody>
+  </table>
+  <p>Across a year, that's roughly 18 full working days reclaimed, nearly a full month of one staff member's time, on a single compliance workflow. About 70% of the manual admin is removed. The remaining 30% is the parts that genuinely need human judgment.</p>
+
+  <h2>Why This Pattern Matters Beyond Gas Safety</h2>
+  <p>Gas Safety is one of perhaps a dozen recurring compliance workflows in a typical UK letting agent's operation: EPC renewals, electrical safety inspections, deposit registrations, periodic inspections, deposit returns. Each one has its own version of the same pattern: software the team can't change, plus an Excel-and-email layer that absorbs admin time.</p>
+  <p>The same automation pattern applies to each. We chose Gas Safety as the starting point because it had the highest volume and the clearest measurable savings. Once the pattern is proven for this client on this workflow, the same approach extends to the others with minimal additional build effort.</p>
+
+  <!-- Status callout -->
+  <div class="status-block">
+    <div class="label">Status</div>
+    <p>This build is in development at the time of writing. Measured deployment results will be added to this document once the system has been live for 60 days.</p>
+  </div>
+
+  <!-- CTA -->
+  <div class="cta-block">
+    <h2>What This Could Look Like For You</h2>
+    <p>Every letting agency has its own software stack, its own workflow quirks, and its own particular admin pain points. The Gas Safety workflow above is one example. The underlying diagnostic approach (find the highest-volume admin workflow, map the manual bridge that costs the most, build automation around the parts you can change) applies universally.</p>
+    <p><span class="cta-accent">If you'd like a similar diagnostic for your agency, reply to the email this PDF came with and we'll book a 30-minute systems mapping call.</span> The diagnostic alone is worth doing even if you don't commission a build. Most letting agency operators tell us they finished the call seeing their own workflow differently.</p>
+  </div>
+
+  <div class="doc-footer">Klex Solutions &nbsp;·&nbsp; Scale Your Business. Kill the Busywork.</div>
+
+</div>
+</body>
+</html>
