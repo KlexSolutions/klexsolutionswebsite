@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="UTF-8">
+<title>Klex Solutions Case Study: UK Agency Automation</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap');
+
+  @page {
+    size: A4;
+    margin: 20mm 18mm;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body {
+    background: #FFFFFF;
+    color: #1A1A1A;
+  }
+
+  body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 11pt;
+    line-height: 1.6;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .page { max-width: 174mm; margin: 0 auto; }
+
+  /* Header */
+  .doc-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-bottom: 14pt;
+    border-bottom: 1.5pt solid #1A1A1A;
+    margin-bottom: 26pt;
+  }
+  .logo { height: 28pt; width: auto; }
+  .doc-label {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-weight: 700;
+    font-size: 9.5pt;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: #1A1A1A;
+  }
+
+  /* Title block */
+  .title-block {
+    margin-bottom: 28pt;
+    padding: 16pt 0 16pt 18pt;
+    border-left: 3pt solid #FF6B6B;
+  }
+  h1 {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-weight: 700;
+    font-size: 22pt;
+    line-height: 1.22;
+    color: #1A1A1A;
+    margin-bottom: 8pt;
+    letter-spacing: -0.01em;
+  }
+  .subtitle {
+    font-family: 'Inter', sans-serif;
+    font-weight: 400;
+    font-size: 12pt;
+    color: #6B7280;
+    line-height: 1.5;
+  }
+
+  /* Sections */
+  h2 {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-weight: 700;
+    font-size: 14pt;
+    color: #1A1A1A;
+    margin-top: 22pt;
+    margin-bottom: 10pt;
+    page-break-after: avoid;
+    letter-spacing: -0.005em;
+  }
+  h2:first-of-type { margin-top: 0; }
+
+  p { margin-bottom: 10pt; }
+  p:last-child { margin-bottom: 0; }
+
+  em.stage {
+    font-style: normal;
+    font-weight: 600;
+    color: #1A1A1A;
+  }
+
+  /* Results list */
+  .results-list {
+    list-style: none;
+    padding: 0;
+    margin: 14pt 0 12pt;
+    page-break-inside: avoid;
+  }
+  .results-list li {
+    padding: 9pt 0 9pt 22pt;
+    border-bottom: 0.5pt solid #F4F4F5;
+    position: relative;
+    line-height: 1.5;
+  }
+  .results-list li:last-child { border-bottom: none; }
+  .results-list li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 13pt;
+    width: 8pt;
+    height: 8pt;
+    background: #FF6B6B;
+  }
+  .results-list .stat {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-weight: 700;
+    color: #1A1A1A;
+  }
+
+  /* CTA block */
+  .cta-block {
+    margin-top: 32pt;
+    padding: 22pt 24pt;
+    background: #1A1A1A;
+    color: #FFFFFF;
+    page-break-inside: avoid;
+  }
+  .cta-block h2 {
+    color: #FFFFFF;
+    margin-top: 0;
+    margin-bottom: 10pt;
+    font-size: 15pt;
+  }
+  .cta-block p {
+    color: #FFFFFF;
+    margin-bottom: 8pt;
+    line-height: 1.55;
+  }
+  .cta-block p:last-child { margin-bottom: 0; }
+  .cta-accent {
+    color: #FF6B6B;
+    font-weight: 600;
+  }
+
+  /* Footer / closing brand mark */
+  .doc-footer {
+    margin-top: 22pt;
+    padding-top: 14pt;
+    border-top: 1pt solid #F4F4F5;
+    text-align: center;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-weight: 600;
+    font-size: 8.5pt;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: #6B7280;
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- Document header -->
+  <div class="doc-header">
+    <img class="logo" src="https://klexsolutions.com/KS%20Full%20Logo.svg?v=3" alt="Klex Solutions">
+    <div class="doc-label">Case Study</div>
+  </div>
+
+  <!-- Title block -->
+  <div class="title-block">
+    <h1>How a 12-Person UK Agency Reclaimed 40+ Hours a Week and Opened Capacity for New Clients, Without Hiring</h1>
+    <div class="subtitle">A case study in custom automation for a UK B2B agency.</div>
+  </div>
+
+  <!-- Content -->
+  <h2>The Setup</h2>
+  <p>A 12-person UK agency, sourcing highly targeted prospects for clients across property, construction, and industrial sectors. Senior reps wore two hats: strategy (defining who to target and why) and grunt work (manually pulling lists, hunting emails, formatting spreadsheets). The first hat was their craft. The second was burning their week.</p>
+
+  <h2>The Bottleneck</h2>
+  <p>For every new client campaign, the team's senior reps were spending 2-3 full days before any actual prospecting started: manual LinkedIn searches profile by profile; copy-pasting data into Excel; running lists through email-finder tools one at a time; manually sorting and categorising the output; finally handing the cleaned data over to whoever was running the outreach.</p>
+  <p>The bottleneck wasn't talent. It was that the entire prospecting craft had to wait for the data drudgery to finish first.</p>
+  <p>Business impact: the agency was capped on how many new client campaigns it could take on each quarter. Growth meant either hiring more senior reps (expensive, slow, hard to find good ones) or burning out the existing team.</p>
+
+  <h2>What We Built</h2>
+  <p>A single internal hub that replaced every spreadsheet, copy-paste step, and tool-switching moment in the workflow.</p>
+  <p>The rep experience: paste a LinkedIn search URL into a custom form, click Go. Behind the scenes, the system scrapes the profiles, runs each one through multiple verified email databases for the best match, and lands the results in the agency's CRM, neatly categorised and ready to pitch. No spreadsheet handover.</p>
+  <p>The crucial design decision: reps stayed in full control of <em class="stage">who</em> to search for and <em class="stage">how</em> to position the campaign. The automation only handled the data drudgery, never the strategy, never the messaging.</p>
+  <p>Built on Make.com, integrating directly with the team's existing CRM. No new tools for reps to learn. Output formatting matched exactly to how the team already operated.</p>
+
+  <h2>The Results</h2>
+  <ul class="results-list">
+    <li><span class="stat">40+ hours a week</span> of senior rep time reclaimed across the team.</li>
+    <li><span class="stat">80%+ verified email match rate</span>, better than the team was achieving manually.</li>
+    <li><span class="stat">New client campaign setup time</span>: 2-3 days down to roughly 15 minutes.</li>
+    <li><span class="stat">3 new clients onboarded</span> in the six months following, without a single new hire.</li>
+    <li>Senior reps spent the reclaimed time on strategy and direct selling, the work they were actually hired to do.</li>
+  </ul>
+
+  <h2>Why It Worked</h2>
+  <p>We didn't try to automate the reps' craft. We automated the drudgery around it.</p>
+  <p>The team's value to clients was their prospecting strategy, knowing exactly who to target and why, based on years operating in their niches. That insight isn't automatable, and it shouldn't be.</p>
+  <p>What <em class="stage">was</em> automatable: the copy-paste, the format-cleaning, the email-hunting, the duplicate-checking. None of that was where the team's value sat. Reps loved the system because nothing they enjoyed got taken away, only the work they dreaded.</p>
+
+  <h2>The Build</h2>
+  <p>Six weeks to design, build, and test. One week to onboard the team. ROI hit by month two. Reclaimed-time savings alone covered the build cost.</p>
+
+  <!-- CTA -->
+  <div class="cta-block">
+    <h2>What This Could Look Like For You</h2>
+    <p>If your agency has senior reps doing data work that doesn't need their judgment (manual prospecting, list-building, contact enrichment, CRM clean-up), the same patterns apply.</p>
+    <p>Happy to map out what this looks like specifically for your team and stack. <span class="cta-accent">Reply to the email this PDF came with and we'll book a 30-minute systems mapping call.</span></p>
+  </div>
+
+  <div class="doc-footer">Klex Solutions &nbsp;·&nbsp; Scale Your Business. Kill the Busywork.</div>
+
+</div>
+</body>
+</html>
